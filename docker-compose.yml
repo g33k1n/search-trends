@@ -1,0 +1,31 @@
+services:
+  nats:
+    image: nats:2.10-alpine
+    ports:
+      - "4222:4222"
+
+  nats-box:
+    image: natsio/nats-box:0.14.5
+    command: ["sleep", "infinity"]
+    depends_on:
+      - nats
+
+  app:
+    build: .
+    environment:
+      HTTP_ADDR: ":8080"
+      NATS_URL: "nats://nats:4222"
+      NATS_SUBJECT: "search.events"
+      WINDOW: "5m"
+      BUCKET_RESOLUTION: "1s"
+      MAX_QUERY_PER_BUCKET: "1000"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - nats
+
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: 172.29.10.0/24

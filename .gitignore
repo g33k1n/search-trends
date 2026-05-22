@@ -1,0 +1,10 @@
+.idea/
+.vscode/
+
+bin/
+dist/
+coverage.out
+
+search-trends
+
+.env
