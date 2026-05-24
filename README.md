@@ -23,17 +23,17 @@ curl http://localhost:8080/health
 Отправить несколько поисковых событий в Kafka (через kafka-console-producer внутри контейнера):
 
 ```bash
-docker compose exec kafka bash -c \
+docker compose exec kafka sh -c \
   "echo '{\"query\":\"iphone 15\",\"user_id\":\"u1\",\"request_id\":\"r1\",\"timestamp\":\"'\"\$(date -u +%Y-%m-%dT%H:%M:%SZ)\"'\",\"source\":\"search-api\"}' \
-   | kafka-console-producer.sh --bootstrap-server kafka:9092 --topic search.events"
+   | /opt/kafka/bin/kafka-console-producer.sh --bootstrap-server kafka:9092 --topic search.events"
 
-docker compose exec kafka bash -c \
+docker compose exec kafka sh -c \
   "echo '{\"query\":\"iphone 15\",\"user_id\":\"u2\"}' \
-   | kafka-console-producer.sh --bootstrap-server kafka:9092 --topic search.events"
+   | /opt/kafka/bin/kafka-console-producer.sh --bootstrap-server kafka:9092 --topic search.events"
 
-docker compose exec kafka bash -c \
+docker compose exec kafka sh -c \
   "echo '{\"query\":\"sneakers\",\"user_id\":\"u3\"}' \
-   | kafka-console-producer.sh --bootstrap-server kafka:9092 --topic search.events"
+   | /opt/kafka/bin/kafka-console-producer.sh --bootstrap-server kafka:9092 --topic search.events"
 ```
 
 Получить топ запросов:

@@ -41,6 +41,6 @@ ts="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
       "$q" "$i" "$i" "$ts"
   done
 } | docker compose exec -T kafka \
-    kafka-console-producer.sh --bootstrap-server kafka:9092 --topic "$TOPIC" >/dev/null
+    /opt/kafka/bin/kafka-console-producer.sh --bootstrap-server kafka:9092 --topic "$TOPIC" >/dev/null
 
 echo "Done."
