@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	domain "github.com/g33k1n/search-trends/internal/domain/trends"
+	domain "github.com/leva/search-trends/internal/domain/trends"
 )
 
 type stubStore struct {
@@ -25,14 +25,14 @@ func (s *stubStore) Add(_ context.Context, q domain.SearchQuery, _ time.Time) er
 	s.added = append(s.added, q)
 	return nil
 }
-func (s *stubStore) Top(context.Context, int) []domain.TrendEntry         { return nil }
-func (s *stubStore) AddStop(context.Context, domain.SearchQuery) error    { return nil }
-func (s *stubStore) RemoveStop(context.Context, domain.SearchQuery) error { return nil }
-func (s *stubStore) ListStop(context.Context) []string                    { return nil }
-func (s *stubStore) Window() time.Duration                                { return 5 * time.Minute }
+func (s *stubStore) Top(context.Context, int) []domain.TrendEntry           { return nil }
+func (s *stubStore) AddStop(context.Context, domain.SearchQuery) error      { return nil }
+func (s *stubStore) RemoveStop(context.Context, domain.SearchQuery) error   { return nil }
+func (s *stubStore) ListStop(context.Context) []string                      { return nil }
+func (s *stubStore) Window() time.Duration                                  { return 5 * time.Minute }
 
 type stubMetrics struct {
-	mu                                      sync.Mutex
+	mu                                            sync.Mutex
 	received, accepted, rejected, malformed int
 }
 

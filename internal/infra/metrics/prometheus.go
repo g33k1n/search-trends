@@ -7,7 +7,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	apptrends "github.com/g33k1n/search-trends/internal/application/trends"
+	apptrends "github.com/leva/search-trends/internal/application/trends"
 )
 
 var _ apptrends.MetricsSink = (*Sink)(nil)

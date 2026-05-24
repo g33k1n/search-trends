@@ -7,8 +7,8 @@ import (
 	"strconv"
 	"strings"
 
-	apptrends "github.com/g33k1n/search-trends/internal/application/trends"
-	domain "github.com/g33k1n/search-trends/internal/domain/trends"
+	apptrends "github.com/leva/search-trends/internal/application/trends"
+	domain "github.com/leva/search-trends/internal/domain/trends"
 )
 
 type Server struct {

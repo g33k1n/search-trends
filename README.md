@@ -23,17 +23,17 @@ curl http://localhost:8080/health
 Отправить несколько поисковых событий в Kafka (через kafka-console-producer внутри контейнера):
 
 ```bash
-docker compose exec kafka sh -c \
+docker compose exec kafka bash -c \
   "echo '{\"query\":\"iphone 15\",\"user_id\":\"u1\",\"request_id\":\"r1\",\"timestamp\":\"'\"\$(date -u +%Y-%m-%dT%H:%M:%SZ)\"'\",\"source\":\"search-api\"}' \
-   | /opt/kafka/bin/kafka-console-producer.sh --bootstrap-server kafka:9092 --topic search.events"
+   | kafka-console-producer.sh --bootstrap-server kafka:9092 --topic search.events"
 
-docker compose exec kafka sh -c \
+docker compose exec kafka bash -c \
   "echo '{\"query\":\"iphone 15\",\"user_id\":\"u2\"}' \
-   | /opt/kafka/bin/kafka-console-producer.sh --bootstrap-server kafka:9092 --topic search.events"
+   | kafka-console-producer.sh --bootstrap-server kafka:9092 --topic search.events"
 
-docker compose exec kafka sh -c \
+docker compose exec kafka bash -c \
   "echo '{\"query\":\"sneakers\",\"user_id\":\"u3\"}' \
-   | /opt/kafka/bin/kafka-console-producer.sh --bootstrap-server kafka:9092 --topic search.events"
+   | kafka-console-producer.sh --bootstrap-server kafka:9092 --topic search.events"
 ```
 
 Получить топ запросов:
@@ -106,7 +106,7 @@ curl -X DELETE http://localhost:8080/stop-list/iphone%2015
 ## Архитектура
 
 ```
-cmd/search-trends/main.go            composition root + graceful shutdown
+cmd/main.go                          composition root + graceful shutdown
 internal/
 ├── domain/trends/                   SearchQuery (VO), TrendEntry, sentinel errors
 ├── application/trends/              use cases (Ingest, QueryTop, StopList) + порты
@@ -152,29 +152,11 @@ MAX_QUERY_PER_BUCKET=1000
 | `BUCKET_RESOLUTION` | `1s` | Размер бакета |
 | `MAX_QUERY_PER_BUCKET` | `1000` | Лимит одинаковых запросов в бакет |
 
-## Компромиссы
-
-- Стейт хранится в памяти. При рестарте 5-мин окно теряется — приемлемо для виджета. Для production-версии стоит добавить Redis-реплику (см. ниже).
-- Snapshot топа пересортировывает все уникальные запросы окна. При очень высокой кардинальности — заменить на heap top-K (`O(N log K)`).
-- Лимит per-bucket снижает влияние накрутки, но может недосчитать виральный запрос на пике.
-- События с timestamp из будущего «прижимаются» к now.
-
 ## Тесты
 
 ```bash
 go test -race ./...
 ```
-
-Покрыто по слоям:
-
-| Слой | Файл | Что |
-|---|---|---|
-| domain | `domain/trends/event_test.go` | нормализация `SearchQuery`, отказ на пустых |
-| application | `application/trends/ingest_test.go` | use case со stub store/metrics |
-| adapter (in) | `adapter/http/handler_test.go` | все эндпоинты через `httptest` (200/400/404/204) |
-| infra | `infra/trends/memory_store_test.go` | sliding-window, стоп-лист, антифрод, параллельный race-тест |
-| infra | `infra/metrics/prometheus_test.go` | формат экспозиции `# HELP`/`# TYPE`, конкурентность атомиков |
-| config | `config/config_test.go` | дефолты, CSV брокеров, валидация duration/int, window < resolution |
 
 ## Производительность
 

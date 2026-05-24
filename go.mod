@@ -1,4 +1,4 @@
-module github.com/g33k1n/search-trends
+module github.com/leva/search-trends
 
 go 1.24
 

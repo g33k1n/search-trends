@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	domain "github.com/g33k1n/search-trends/internal/domain/trends"
+	domain "github.com/leva/search-trends/internal/domain/trends"
 )
 
 type TrendsStore interface {

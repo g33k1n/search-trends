@@ -10,12 +10,12 @@ import (
 	"syscall"
 	"time"
 
-	httpadapter "github.com/g33k1n/search-trends/internal/adapter/http"
-	kafkaadapter "github.com/g33k1n/search-trends/internal/adapter/kafka"
-	apptrends "github.com/g33k1n/search-trends/internal/application/trends"
-	"github.com/g33k1n/search-trends/internal/config"
-	"github.com/g33k1n/search-trends/internal/infra/metrics"
-	infratrends "github.com/g33k1n/search-trends/internal/infra/trends"
+	httpadapter "github.com/leva/search-trends/internal/adapter/http"
+	kafkaadapter "github.com/leva/search-trends/internal/adapter/kafka"
+	apptrends "github.com/leva/search-trends/internal/application/trends"
+	"github.com/leva/search-trends/internal/config"
+	"github.com/leva/search-trends/internal/infra/metrics"
+	infratrends "github.com/leva/search-trends/internal/infra/trends"
 )
 
 func main() {

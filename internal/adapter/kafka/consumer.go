@@ -11,7 +11,7 @@ import (
 
 	"github.com/twmb/franz-go/pkg/kgo"
 
-	apptrends "github.com/g33k1n/search-trends/internal/application/trends"
+	apptrends "github.com/leva/search-trends/internal/application/trends"
 )
 
 type Config struct {

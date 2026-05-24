@@ -16,8 +16,7 @@ if ! command -v hey >/dev/null 2>&1; then
 fi
 
 echo "[1/3] Health check..."
-curl -fsS http://localhost:8080/health
-echo
+curl -fsS http://localhost:8080/health | jq .
 
 echo "[2/3] Producing $EVENTS events..."
 "$(dirname "$0")/produce.sh" "$EVENTS" "$UNIQUE"
@@ -29,8 +28,7 @@ hey -z "$DURATION" -c "$CONCURRENCY" "$URL"
 
 echo
 echo "Current top:"
-curl -fsS "$URL"
-echo
+curl -fsS "$URL" | jq .
 
 echo
 echo "Service metrics:"
