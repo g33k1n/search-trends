@@ -5,6 +5,6 @@ bin/
 dist/
 coverage.out
 
-search-trends
+/search-trends
 
 .env
